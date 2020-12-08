@@ -1,0 +1,8 @@
+include ':features:bluetooth_api'
+include ':features:bluetooth'
+include ':features:phone'
+include ':features:phone_api'
+include ':app'
+include ':data'
+include ':entities'
+rootProject.name = "PhoneApp"
