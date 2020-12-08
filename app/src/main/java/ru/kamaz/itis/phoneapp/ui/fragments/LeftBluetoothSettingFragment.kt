@@ -18,6 +18,9 @@ import ru.kamaz.itis.bluetooth.presrnters.interfaces.LeftBluetoothSettingsInterf
 import ru.kamaz.itis.phoneapp.R
 import ru.kamaz.itis.phoneapp.ui.App
 import ru.kamaz.itis.phoneapp.ui.adapters.BluetoothPairedDevicesAdapter
+import ru.kamaz.itis.phoneapp.ui.pojo.BtItem
+import ru.kamaz.itis.phoneapp.ui.pojo.RecyclerViewItem
+import ru.kamaz.itis.phoneapp.ui.pojo.Title
 
 
 class LeftBluetoothSettingFragment : Fragment(), LeftBluetoothSettingsInterface.View {
@@ -41,7 +44,6 @@ class LeftBluetoothSettingFragment : Fragment(), LeftBluetoothSettingsInterface.
         super.onViewCreated(view, savedInstanceState)
         presenter.setView(this)
         presenter.init()
-
     }
 
     private val receiver = object : BroadcastReceiver() {
@@ -68,9 +70,13 @@ class LeftBluetoothSettingFragment : Fragment(), LeftBluetoothSettingsInterface.
         adapter?.let { this.adapter = it } ?: adapterNotSupported()
         whatPairedWhenOpenApp()
 
-        val listList = queryPairedDevices()
+        val listList = mutableListOf<RecyclerViewItem>(Title("Сопряженные устройства"))
+        listList.addAll(queryPairedDevices())
 
-        rv_btList.adapter=BluetoothPairedDevicesAdapter(listList)
+        listList.add(Title("Сопряженные устройства"))
+        listList.addAll(queryPairedDevices())
+
+        rv_btList.adapter = BluetoothPairedDevicesAdapter(listList)
         rv_btList.layoutManager= LinearLayoutManager(context)
     }
 
@@ -104,17 +110,17 @@ class LeftBluetoothSettingFragment : Fragment(), LeftBluetoothSettingsInterface.
     }
 
 
-     fun queryPairedDevices(): List<BtItem> {
+     private fun queryPairedDevices(): MutableList<RecyclerViewItem> {
+         val pairedDevices: Set<BluetoothDevice> = adapter.bondedDevices
+         val list = mutableListOf<RecyclerViewItem>()
 
-         val pairedDevices: Set<BluetoothDevice> = adapter.getBondedDevices()
-         val list = ArrayList<BtItem>()
-
-         pairedDevices?.forEach { device ->
+         pairedDevices.forEach { device ->
              val deviceName = device.name
              val deviceHardwareAddress = device.address
-            val item = BtItem(deviceName,deviceHardwareAddress)
-             list+=item
+             val item = BtItem(deviceName,deviceHardwareAddress)
+             list += item
          }
+
          return list
 
      }
