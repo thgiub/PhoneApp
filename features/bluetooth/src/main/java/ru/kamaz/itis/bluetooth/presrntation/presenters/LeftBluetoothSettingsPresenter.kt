@@ -1,6 +1,7 @@
 package ru.kamaz.itis.bluetooth.presrntation.presenters
 
-import ru.kamaz.itis.bluetooth.presrnters.interfaces.LeftBluetoothSettingsInterface
+import android.bluetooth.BluetoothDevice
+import ru.kamaz.itis.bluetooth.presrntation.interfaces.LeftBluetoothSettingsInterface
 
 internal class LeftBluetoothSettingsPresenter(): LeftBluetoothSettingsInterface.Presenter {
     private lateinit var view: LeftBluetoothSettingsInterface.View
@@ -16,5 +17,9 @@ internal class LeftBluetoothSettingsPresenter(): LeftBluetoothSettingsInterface.
 
     override fun onBluetoothOnOffBtnClicked() {
         view.changeBluetoothCondition()
+    }
+
+    override fun allDeviceBt(it: BluetoothDevice) {
+        view.allDeviceBt(it.name, it.address)
     }
 }

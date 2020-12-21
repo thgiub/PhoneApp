@@ -5,7 +5,7 @@ import ru.kamaz.itis.bluetooth.di.modules.CacheModule
 import ru.kamaz.itis.bluetooth.di.modules.DataModule
 import ru.kamaz.itis.bluetooth.di.modules.DomainModule
 import ru.kamaz.itis.bluetooth.di.modules.PresentationModule
-import ru.kamaz.itis.bluetooth.presrnters.interfaces.LeftBluetoothSettingsInterface
+import ru.kamaz.itis.bluetooth.presrntation.interfaces.LeftBluetoothSettingsInterface
 import javax.inject.Singleton
 
 @Singleton
