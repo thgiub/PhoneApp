@@ -2,15 +2,12 @@ package ru.kamaz.itis.phoneapp.ui.adapters
 
 
 import android.bluetooth.BluetoothDevice
-import android.provider.ContactsContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import ru.kamaz.itis.phoneapp.R
 import ru.kamaz.itis.phoneapp.ui.pojo.BtItem
 import ru.kamaz.itis.phoneapp.ui.pojo.RecyclerViewItem
@@ -74,15 +71,16 @@ class BluetoothPairedDevicesAdapter(private val items: MutableList<RecyclerViewI
     }
 
     abstract class VhBase<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        init {
+      /*  init {
             itemView.setOnClickListener {
                 val position: Int= adapterPosition
                 Toast.makeText(itemView.context,"сосои мой хуй и будь здоров $position", Toast.LENGTH_LONG).show()
             }
-        }
+        }*/
 
         abstract fun bind(item: T)
     }
+
 
     class VhBluetoothItem(itemView: View) : VhBase<BtItem>(itemView) {
         private val btDeviceNameView: TextView? = itemView.findViewById(R.id.tv_device_name)
@@ -94,6 +92,15 @@ class BluetoothPairedDevicesAdapter(private val items: MutableList<RecyclerViewI
             btDeviceNameView?.text = item.btName
             btMacAddressView?.text = item.btMacAddress
         }
+
+        init {
+            itemView.setOnClickListener {
+                val position: Int= adapterPosition
+                Toast.makeText(itemView.context, "я ебу собак  $position", Toast.LENGTH_LONG).show()
+
+
+            }
+        }
     }
 
     class VhTitle(itemView: View) : VhBase<Title>(itemView) {
@@ -103,6 +110,10 @@ class BluetoothPairedDevicesAdapter(private val items: MutableList<RecyclerViewI
             thisDeviceBtStatus?.text = item.text
         }
     }
+    interface IMyViewHolderClicks {
+        fun connect(btDevice: BluetoothDevice)
+    }
+
 
 }
 

@@ -55,6 +55,16 @@ class LeftBluetoothSettingFragment : Fragment(), LeftBluetoothSettingsInterface.
 
         whatPairedWhenOpenApp()
 
+        if (adapter.isDiscovering) {
+            adapter.cancelDiscovery()
+        }
+        var filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+        context?.registerReceiver(receiver, filter)
+        filter = IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED)
+        context?.registerReceiver(receiver, filter)
+        filter = IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
+        context?.registerReceiver(receiver, filter)
+        adapter.startDiscovery()
         val listList = mutableListOf<RecyclerViewItem>(Title("Сопряженные устройства"))
         listList.addAll(queryPairedDevices())
         listList.add(Title("Все устиройства"))
@@ -85,26 +95,6 @@ class LeftBluetoothSettingFragment : Fragment(), LeftBluetoothSettingsInterface.
     }
 
     override fun setListeners() {
-        button2.setOnClickListener {
-            if (adapter.isDiscovering) {
-                adapter.cancelDiscovery()
-            }
-            var filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-            context?.registerReceiver(receiver, filter)
-            filter = IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED)
-            context?.registerReceiver(receiver, filter)
-            filter = IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
-            context?.registerReceiver(receiver, filter)
-            adapter.startDiscovery()
-        }
-
-        switchOnOffBt.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                presenter.onBluetoothOnOffBtnClicked()
-            } else {
-                presenter.onBluetoothOnOffBtnClicked()
-            }
-        }
 
         receiver.setOnDeviceFoundListener {
             (rv_btList.adapter as BluetoothPairedDevicesAdapter).addNewDevice(BtItem(it.name ?: "", it.address ?: ""))
@@ -152,7 +142,7 @@ class LeftBluetoothSettingFragment : Fragment(), LeftBluetoothSettingsInterface.
     }
 
     override fun whatPairedWhenOpenApp() {
-        switchOnOffBt.isChecked = adapter.isEnabled
+
     }
 
     override fun allDeviceBt(name: String, mac: String) {
